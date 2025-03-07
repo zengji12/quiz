@@ -32,12 +32,12 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install selenium
+    
+    - name: Start Selenium WebDriver (Chrome) 
+        run: | 
+          sudo apt update 
+          sudo apt install -y google-chrome-stable 
 
-    - name: Start Stub Server
-      run: |
-        ls -lah /var/www/html
-        echo 'Server is running on port 3000'
-        
     - name: Run Selenium Test - Register
       run: |
         python test/test_register.py

@@ -5,19 +5,19 @@ from selenium.webdriver.common.by import By
 import time
 
 def init_driver():
-    # Setting Chrome options
-    chrome_options = Options()
-    chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--no-user-data-dir")  # Disable user data directory
-    chrome_options.add_argument("--headless")  # Optional: If you want headless mode
-
-    # Initialize the WebDriver with options
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")  # Mode headless (tanpa UI)
+    chrome_options.add_argument("--no-sandbox")  # Dibutuhkan agar berjalan di GitHub Actions
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Mencegah masalah shared memory di Linux
+    chrome_options.add_argument("--disable-gpu")  # Tidak perlu GPU di server CI/CD
+    
+    # Set up WebDriver dengan konfigurasi yang sudah diperbaiki
     driver = webdriver.Chrome(options=chrome_options)
-    driver.maximize_window()
+    driver.maximize_window()  # Optional: max window for tests (in headless mode this will be default size)
     return driver
 
 def test_register_valid(driver):
-    driver.get('http://localhost:3000/register.php')
+    driver.get('http://localhost/quiz/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -40,7 +40,7 @@ def test_register_valid(driver):
     print("Register Valid Test Passed")
 
 def test_register_username_exists(driver):
-    driver.get('http://localhost:3000/register.php')
+    driver.get('http://localhost/quiz/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -63,7 +63,7 @@ def test_register_username_exists(driver):
     print("Register Username Exists Test Passed")
 
 def test_register_password_mismatch(driver):
-    driver.get('http://localhost:3000/register.php')
+    driver.get('http://localhost/quiz/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -86,7 +86,7 @@ def test_register_password_mismatch(driver):
     print("Register Password Mismatch Test Passed")
 
 def test_register_empty_fields(driver):
-    driver.get('http://localhost:3000/register.php')
+    driver.get('http://localhost/quiz/register.php')
 
     submit_button = driver.find_element(By.NAME, 'submit')
 

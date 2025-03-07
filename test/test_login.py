@@ -1,22 +1,21 @@
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import time
 
 def init_driver():
-    # Setting Chrome options
-    chrome_options = Options()
-    chrome_options.add_argument("--no-first-run")
-    chrome_options.add_argument("--no-user-data-dir")  # Disable user data directory
-    chrome_options.add_argument("--headless")  # Optional: If you want headless mode
-
-    # Initialize the WebDriver with options
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")  # Mode headless (tanpa UI)
+    chrome_options.add_argument("--no-sandbox")  # Dibutuhkan agar berjalan di GitHub Actions
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Mencegah masalah shared memory di Linux
+    chrome_options.add_argument("--disable-gpu")  # Tidak perlu GPU di server CI/CD
+    
+    # Set up WebDriver dengan konfigurasi yang sudah diperbaiki
     driver = webdriver.Chrome(options=chrome_options)
-    driver.maximize_window()
+    driver.maximize_window()  # Optional: max window for tests (in headless mode this will be default size)
     return driver
 
 def test_login_valid(driver):
-    driver.get('http://localhost:3000/login.php')
+    driver.get('http://localhost/quiz/login.php')
     driver.find_element(By.NAME, "username").send_keys("reza")
     driver.find_element(By.NAME, "password").send_keys("password")
     driver.find_element(By.NAME, "submit").click()
@@ -27,7 +26,7 @@ def test_login_valid(driver):
     print("Login Valid Test Passed")
 
 def test_login_empty_fields(driver):
-    driver.get('http://localhost:3000/login.php')
+    driver.get('http://localhost/quiz/login.php')
     submit_button = driver.find_element(By.NAME, 'submit')
     submit_button.click()
 
@@ -37,9 +36,9 @@ def test_login_empty_fields(driver):
     print("Login Without Data Test Passed")
 
 def test_login_invalid_username(driver):
-    driver.get('http://localhost:3000/login.php')
-    username = driver.find_element(By.ID, 'username')
-    password = driver.find_element(By.ID, 'InputPassword')
+    driver.get('http://localhost/quiz/login.php')
+    username = driver.find_element(By.NAME, 'username')
+    password = driver.find_element(By.NAME, 'password')
     submit_button = driver.find_element(By.NAME, 'submit')
 
     username.send_keys('invalid_username')
@@ -52,10 +51,10 @@ def test_login_invalid_username(driver):
     print("Login Invalid Username Test Passed")
 
 def test_login_invalid_password(driver):
-    driver.get('http://localhost:3000/login.php')
+    driver.get('http://localhost/quiz/login.php')
     
-    username = driver.find_element(By.ID, 'username')
-    password = driver.find_element(By.ID, 'InputPassword')
+    username = driver.find_element(By.NAME, 'username')
+    password = driver.find_element(By.NAME, 'password')
     submit_button = driver.find_element(By.NAME, 'submit')
 
     username.send_keys('reza')
