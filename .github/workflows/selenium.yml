@@ -50,8 +50,15 @@ jobs:
 
     - name: Run Selenium Tests - Login
       run: |
-        python test_login.py
-    
+        python test/test_login.py
+
     - name: Run Selenium Test - Register
       run: |
-        python test_register.py
+        python test/test_register.py
+      
+    - name: Upload Test Results 
+      if: always() 
+      uses: actions/upload-artifact@v4 
+      with: 
+        name: selenium-test-results 
+        path: test-results/ 
