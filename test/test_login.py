@@ -22,7 +22,8 @@ def test_login_valid(driver):
     
     time.sleep(2)
     assert "index.php" in driver.current_url
-    index = driver.find_element(By.TEXT, 'Logout')
+    time.sleep(2)
+    index = driver.find_element(By.XPATH, "//*[text()='Logout']")
     if (index):
         index.click()
     print("Login Valid Test Passed")
