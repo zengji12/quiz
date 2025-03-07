@@ -47,7 +47,7 @@ jobs:
         python test/test_register.py
 
     - name: Upload Test Results
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: selenium-test-results
         path: path/to/your/results
