@@ -15,7 +15,7 @@ def init_driver():
     return driver
 
 def test_login_valid(driver):
-    driver.get('http://localhost/quiz/login.php')
+    driver.get('http://127.0.0.1:8000/login.php')
     driver.find_element(By.NAME, "username").send_keys("reza")
     driver.find_element(By.NAME, "password").send_keys("password")
     driver.find_element(By.NAME, "submit").click()
@@ -26,7 +26,7 @@ def test_login_valid(driver):
     print("Login Valid Test Passed")
 
 def test_login_empty_fields(driver):
-    driver.get('http://localhost/quiz/login.php')
+    driver.get('http://127.0.0.1:8000/login.php')
     submit_button = driver.find_element(By.NAME, 'submit')
     submit_button.click()
 
@@ -36,7 +36,7 @@ def test_login_empty_fields(driver):
     print("Login Without Data Test Passed")
 
 def test_login_invalid_username(driver):
-    driver.get('http://localhost/quiz/login.php')
+    driver.get('http://127.0.0.1:8000/login.php')
     username = driver.find_element(By.NAME, 'username')
     password = driver.find_element(By.NAME, 'password')
     submit_button = driver.find_element(By.NAME, 'submit')
@@ -51,7 +51,7 @@ def test_login_invalid_username(driver):
     print("Login Invalid Username Test Passed")
 
 def test_login_invalid_password(driver):
-    driver.get('http://localhost/quiz/login.php')
+    driver.get('http://127.0.0.1:8000/login.php')
     
     username = driver.find_element(By.NAME, 'username')
     password = driver.find_element(By.NAME, 'password')

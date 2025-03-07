@@ -17,7 +17,7 @@ def init_driver():
     return driver
 
 def test_register_valid(driver):
-    driver.get('http://localhost/quiz/register.php')
+    driver.get('http://127.0.0.1:8000/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -40,7 +40,7 @@ def test_register_valid(driver):
     print("Register Valid Test Passed")
 
 def test_register_username_exists(driver):
-    driver.get('http://localhost/quiz/register.php')
+    driver.get('http://127.0.0.1:8000/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -63,7 +63,7 @@ def test_register_username_exists(driver):
     print("Register Username Exists Test Passed")
 
 def test_register_password_mismatch(driver):
-    driver.get('http://localhost/quiz/register.php')
+    driver.get('http://127.0.0.1:8000/register.php')
 
     name = driver.find_element(By.NAME, 'name')
     email = driver.find_element(By.NAME, 'email')
@@ -86,7 +86,7 @@ def test_register_password_mismatch(driver):
     print("Register Password Mismatch Test Passed")
 
 def test_register_empty_fields(driver):
-    driver.get('http://localhost/quiz/register.php')
+    driver.get('http://127.0.0.1:8000/register.php')
 
     submit_button = driver.find_element(By.NAME, 'submit')
 
