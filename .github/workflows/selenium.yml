@@ -1,53 +1,90 @@
-name: Selenium Test CI/CD 
- 
-on: 
-  push: 
-    branches: 
-      - main 
-  pull_request: 
-    branches: 
-      - main 
-      
+name: Selenium Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
-  test:
+  selenium-test:
     runs-on: ubuntu-latest
-    services:
-      php:
-        image: php:apache
-        ports:
-          - '3000:80'
-        volumes:
-          - ./:/var/www/html
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
+    - name: Create a temporary index.php
+      run: |
+        echo "<?php echo 'Server is running!'; ?>" > index.php
 
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install selenium
-    
-    - name: Start Selenium WebDriver (Chrome) 
-      run: | 
-        sudo apt update 
-        sudo apt install -y google-chrome-stable 
+        sudo apt update
+        sudo apt install -y php php-cli php-mysql unzip google-chrome-stable mariadb-server mariadb-client curl
 
-    - name: Run Selenium Test - Register
+    - name: Start MariaDB Service
       run: |
-        python test/test_register.py
+        sudo systemctl start mariadb
+        sudo systemctl enable mariadb
+        sudo systemctl restart mariadb
+
+    - name: Setup Database
+      run: |
+        sudo mysql --user=root --execute="CREATE DATABASE IF NOT EXISTS quiz_pengupil;"
+        sudo mysql --user=root quiz_pengupil < db/quiz_pengupil.sql
+        sudo mysql --user=root --execute="GRANT ALL PRIVILEGES ON quiz_pengupil.* TO 'root'@'localhost' IDENTIFIED BY '';"
+        sudo mysql --user=root --execute="FLUSH PRIVILEGES;"
+
+    - name: Verify Database Setup
+      run: |
+        sudo mysql -u root -e "USE quiz_pengupil; SHOW TABLES;"
+
+    - name: Start PHP server
+      run: |
+        nohup php -S 127.0.0.1:3000 -t . > server.log 2>&1 &
+        sleep 5
+        echo "✅ Checking server log:"
+        cat server.log
+
+    - name: Wait for server to start
+      run: |
+        for i in {1..10}; do
+          curl -s http://127.0.0.1:3000/ && echo "✅ Server is up!" && exit 0
+          echo "⏳ Waiting for server..."
+          sleep 2
+        done
+        echo "❌ Server failed to start!"
+        exit 1
+
+    - name: Set Up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install Python Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install selenium webdriver-manager pytest chromedriver-autoinstaller
+
+    - name: Run Selenium Tests - Register
+      run: python test/test_register.py
 
     - name: Run Selenium Tests - Login
-      run: |
-        python test/test_login.py
+      run: python test/test_login.py
 
     - name: Upload Test Results
+      if: always()
       uses: actions/upload-artifact@v4
       with:
         name: selenium-test-results
-        path: path/to/your/results
+        path: test-results/
+
+    - name: Upload Test Logs
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: selenium-test-logs
+        path: test-results/test_log.txt
