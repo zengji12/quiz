@@ -34,9 +34,9 @@ jobs:
         pip install selenium
     
     - name: Start Selenium WebDriver (Chrome) 
-        run: | 
-          sudo apt update 
-          sudo apt install -y google-chrome-stable 
+      run: | 
+        sudo apt update 
+        sudo apt install -y google-chrome-stable 
 
     - name: Run Selenium Test - Register
       run: |
