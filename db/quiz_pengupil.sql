@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table quiz_pengupil.users: ~2 rows (approximately)
 INSERT INTO `users` (`id`, `name`, `username`, `email`, `password`) VALUES
 	(1, '', 'irul', 'irul@irul.com', '$2y$10$D9yc9Mt0t8niCNO9di8ejOUPib46suwHghqFnJRKQJ3Z6uwRDxfw.'),
-	(2, '', 'ahmad', 'ahmad@ahmad.com', '$2y$10$OWez2au.UMnz3yedD0BqH.bsOC374XoV9VhMigepVzLyuq2jETHs2');
+	(2, '', 'ahmad', 'ahmad@ahmad.com', '$2y$10$OWez2au.UMnz3yedD0BqH.bsOC374XoV9VhMigepVzLyuq2jETHs2'),
   (3, '', 'reza', 'reza@mail.com', '$2y$10$VGmcJWHQm/phbt7mVbFnSerrCggoYkkQmJPSIlPYoUJb6wZQOJL1u');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
