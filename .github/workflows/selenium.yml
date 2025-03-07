@@ -37,14 +37,14 @@ jobs:
       run: |
         ls -lah /var/www/html
         echo 'Server is running on port 3000'
+        
+    - name: Run Selenium Test - Register
+      run: |
+        python test/test_register.py
 
     - name: Run Selenium Tests - Login
       run: |
         python test/test_login.py
-
-    - name: Run Selenium Test - Register
-      run: |
-        python test/test_register.py
 
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
