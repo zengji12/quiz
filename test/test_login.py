@@ -22,7 +22,9 @@ def test_login_valid(driver):
     
     time.sleep(2)
     assert "index.php" in driver.current_url
-    driver.find_element(By.LINK_TEXT, 'Logout').click()
+    index = driver.find_element(By.LINK_TEXT, 'Logout')
+    if (index):
+        index.click()
     print("Login Valid Test Passed")
 
 def test_login_empty_fields(driver):
