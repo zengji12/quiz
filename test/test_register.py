@@ -36,7 +36,7 @@ def test_register_valid(driver):
     time.sleep(2)
 
     assert "index.php" in driver.current_url
-    index = driver.find_element(By.LINK_TEXT, 'Logout')
+    index = driver.find_element(By.TEXT, 'Logout')
     if (index):
         index.click()
     print("Register Valid Test Passed")
