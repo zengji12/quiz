@@ -4,7 +4,14 @@ from selenium.webdriver.common.by import By
 import time
 
 def init_driver():
-    driver = webdriver.Chrome()
+    # Setting Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument("--no-first-run")
+    chrome_options.add_argument("--no-user-data-dir")  # Disable user data directory
+    chrome_options.add_argument("--headless")  # Optional: If you want headless mode
+
+    # Initialize the WebDriver with options
+    driver = webdriver.Chrome(options=chrome_options)
     driver.maximize_window()
     return driver
 
