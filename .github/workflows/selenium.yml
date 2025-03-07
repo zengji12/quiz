@@ -69,11 +69,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install selenium webdriver-manager pytest chromedriver-autoinstaller
 
-    - name: Run Selenium Tests - Register
-      run: python test/test_register.py
-
-    - name: Run Selenium Tests - Login
-      run: python test/test_login.py
+    - name: Run Selenium Tests
+      run: python test.py
 
     - name: Upload Test Results
       if: always()
